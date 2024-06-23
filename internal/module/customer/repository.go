@@ -16,6 +16,16 @@ func NewRepository(con *sql.DB) domain.CustomerRepository {
 	return &repository{db: goqu.New("default", con)}
 }
 
+func (re repository) All(ctx context.Context) (customers []domain.Customer, err error) {
+	dataset := re.db.From("customers").Order(goqu.I("name").Asc())
+
+	if err := dataset.ScanStructsContext(ctx, &customers); err != nil {
+		return nil, err
+	}
+
+	return
+}
+
 func (re repository) FindById(ctx context.Context, id int64) (customer domain.Customer, err error) {
 	dataset := re.db.From("customers").Where(goqu.Ex{
 		"id": id,
@@ -53,19 +63,16 @@ func (re repository) FindByPhone(ctx context.Context, phone string) (customer do
 }
 
 func (re repository) Insert(ctx context.Context, customer *domain.Customer) error {
-	executor := re.db.Insert("customers").Rows(*customer).Executor()
+	executor := re.db.Insert("customers").Rows(*customer).Returning("id").Executor()
 
-	result, err := executor.Exec()
+	var customerDB domain.Customer
+
+	_, err := executor.ScanStructContext(ctx, &customerDB)
 	if err != nil {
 		return err
 	}
 
-	id, err := result.LastInsertId()
-	if err != nil {
-		return err
-	}
-
-	customer.ID = id
+	customer.ID = customerDB.ID
 	return err
 
 }

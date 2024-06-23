@@ -7,12 +7,13 @@ import (
 
 type Customer struct {
 	ID        int64     `db:"id"`
-	Name      string    `db:"Name"`
+	Name      string    `db:"name"`
 	Phone     string    `db:"phone"`
 	CreatedAt time.Time `db:"created_at"`
 }
 
 type CustomerRepository interface {
+	All(ctx context.Context) ([]Customer, error)
 	FindById(ctx context.Context, id int64) (Customer, error)
 	FindByIds(ctx context.Context, ids []int64) ([]Customer, error)
 	FindByPhone(ctx context.Context, phone string) (Customer, error)
@@ -20,4 +21,12 @@ type CustomerRepository interface {
 }
 
 type CustomerService interface {
+	All(ctx context.Context) ApiResponse
+	Save(ctx context.Context) ApiResponse
+}
+
+type CustomerData struct {
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Phone string `json:"phone"`
 }
