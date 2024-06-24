@@ -16,7 +16,7 @@ func NewRepository(con *sql.DB) domain.CustomerRepository {
 	return &repository{db: goqu.New("default", con)}
 }
 
-func (re repository) All(ctx context.Context) (customers []domain.Customer, err error) {
+func (re repository) FindAll(ctx context.Context) (customers []domain.Customer, err error) {
 	dataset := re.db.From("customers").Order(goqu.I("name").Asc())
 
 	if err := dataset.ScanStructsContext(ctx, &customers); err != nil {
@@ -63,7 +63,14 @@ func (re repository) FindByPhone(ctx context.Context, phone string) (customer do
 }
 
 func (re repository) Insert(ctx context.Context, customer *domain.Customer) error {
-	executor := re.db.Insert("customers").Rows(*customer).Returning("id").Executor()
+	executor := re.db.Insert("customers").
+					Rows(goqu.Record{
+						"name": customer.Name,
+						"phone": customer.Phone,
+						"created_at": customer.CreatedAt,
+					}).
+					Returning("id").
+					Executor()
 
 	var customerDB domain.Customer
 

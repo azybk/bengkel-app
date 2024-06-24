@@ -6,6 +6,8 @@ import (
 	"bengkel_app/internal/module/customer"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/requestid"
 )
 
 func main() {
@@ -16,6 +18,10 @@ func main() {
 	customerService := customer.NewService(customerRepository)
 
 	app := fiber.New()
+	app.Use(requestid.New())
+	app.Use(logger.New(logger.Config{
+		Format: "[${locals:requestid}] ${ip} - ${method} ${status} ${path}",
+	}))
 	customer.NewApi(app, customerService)
 
 	_ = app.Listen(conf.Srv.Host + ":" + conf.Srv.Port)
