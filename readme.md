@@ -30,6 +30,13 @@ customer_id INT NOT NULL
 
 ALTER TABLE history_details ADD plat_nomor VARCHAR(10) NOT NULL
 
+ALTER TABLE histories RENAME TO vehicles;
+ALTER TABLE vehicles RENAME COLUMN no_rangka TO vin;
+ALTER TABLE vehicles RENAME COLUMN merek TO brand;
+
+ALTER TABLE history_details RENAME COLUMN history_id TO vehicle_id;
+ALTER TABLE history_details RENAME COLUMN plat_nomor TO plate_number;
+
 - dependencies
   go get github.com/gofiber/fiber/v2
   go get -u github.com/doug-martin/goqu/v9
