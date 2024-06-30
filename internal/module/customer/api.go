@@ -23,7 +23,7 @@ func NewApi(app *fiber.App, customerService domain.CustomerService) {
 }
 
 func (a api) AllCustomers(ctx *fiber.Ctx) error {
-	c, cancel := context.WithTimeout(ctx.Context(), 30 * time.Second)
+	c, cancel := context.WithTimeout(ctx.Context(), 30*time.Second)
 	defer cancel()
 
 	apiResponse := a.customerService.All(c)
@@ -33,13 +33,13 @@ func (a api) AllCustomers(ctx *fiber.Ctx) error {
 }
 
 func (a api) SaveCustomer(ctx *fiber.Ctx) error {
-	c, cancel := context.WithTimeout(ctx.Context(), 30 * time.Second)
+	c, cancel := context.WithTimeout(ctx.Context(), 30*time.Second)
 	defer cancel()
 
 	var customerData domain.CustomerData
 	if err := ctx.BodyParser(&customerData); err != nil {
-		apiResponse := domain.ApiResponse {
-			Code: "400",
+		apiResponse := domain.ApiResponse{
+			Code:    "400",
 			Message: "Bad Request",
 		}
 		util.ResponseInterceptor(c, &apiResponse)
