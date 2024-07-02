@@ -72,11 +72,14 @@ func (s service) StoreHistorical(ctx context.Context, req domain.VehicleHistoric
 	if err != nil {
 		return domain.ApiResponse{
 			Code: "404",
-			Message: err.Error(),
+			Message: "Bad request",
 		}
 	}
 
 	if vehicle == (domain.Vehicle{}) {
+		vehicle.VIN = req.VIN
+		vehicle.Brand = req.Brand
+
 		err := s.vehicleRepository.Insert(ctx, &vehicle)
 		if err != nil {
 			return domain.ApiResponse{

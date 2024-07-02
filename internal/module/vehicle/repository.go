@@ -32,7 +32,9 @@ func(r *repository) FindByVIN(ctx context.Context, vin string) (vehicle domain.V
 		"vin": vin,
 	})
 
-	_, err = dataset.ScanStructContext(ctx, &vehicle)
+	if _, err = dataset.ScanStructContext(ctx, &vehicle); err != nil {
+		return domain.Vehicle{}, err
+	}
 	return
 }
 

@@ -53,7 +53,7 @@ func (a api) StoreHistorical(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(&req); err != nil {
 		apiResponse := domain.ApiResponse{
 			Code: "400",
-			Message: "Bad Request",
+			Message: err.Error(),
 		}
 
 		util.ResponseInterceptor(c, &apiResponse)

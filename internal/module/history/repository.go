@@ -36,6 +36,7 @@ func (r repository) Insert(ctx context.Context, detail *domain.HistoryDetail) er
 	executor := r.db.Insert("history_details").Rows(goqu.Record{
 		"vehicle_id":  detail.VehicleID,
 		"pic":         detail.PIC,
+		"plate_number": detail.PlateNumber,
 		"notes":       detail.Notes,
 		"customer_id": detail.CustomerID,
 		"created_at":  detail.CreatedAt,

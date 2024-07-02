@@ -9,9 +9,9 @@ type HistoryDetail struct {
 	ID          int64     `db:"id"`
 	VehicleID   int64     `db:"vehicle_id"`
 	PIC         string    `db:"pic"`
-	CreatedAt   time.Time `db:created_at`
+	CreatedAt   time.Time `db:"created_at"`
 	Notes       string    `db:"notes"`
-	CustomerID  int64     `db:"cutomer_id"`
+	CustomerID  int64     `db:"customer_id"`
 	PlateNumber string    `db:"plate_number"`
 }
 

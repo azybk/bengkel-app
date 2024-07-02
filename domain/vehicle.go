@@ -9,7 +9,7 @@ type Vehicle struct {
 	ID        int64     `db:"id"`
 	VIN       string    `db:"vin"`
 	Brand     string    `db:"brand"`
-	UpdatedAt time.Time `db:updated_at`
+	UpdatedAt time.Time `db:"updated_at"`
 }
 
 type VehicleRepository interface {
@@ -33,7 +33,7 @@ type VehicleHistorical struct {
 type VehicleHistoricalRequest struct {
 	VIN       	string `json:"vin"`
 	Brand     	string `json:"brand"`
-	CustomerID  int64  `json:"cutomer_id"`
+	CustomerID  int64  `json:"customer_id"`
 	PIC         string `json:"pic"`
 	PlateNumber string `json:"plate_number"`
 	Notes       string `json:"notes"`
